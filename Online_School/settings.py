@@ -32,7 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://online-school-project.onrender.com',
+    'https://online-school-989z.onrender.com',
     'https://*.127.0.0.1',
     'http://127.0.0.1:5500',
 ]

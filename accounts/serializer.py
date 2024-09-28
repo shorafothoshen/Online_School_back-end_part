@@ -77,7 +77,7 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
             print("User UID:", uid)
             token=PasswordResetTokenGenerator().make_token(user)
             print("User Token: ", token)
-            link="https://online-school-project.onrender.com/api/user/reset/"+uid+"/"+token
+            link="https://online-school-989z.onrender.com/api/user/reset/"+uid+"/"+token
             print(link)
             return attrs
         else:
