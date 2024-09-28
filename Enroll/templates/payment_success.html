@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Success</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 py-8">
+    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl md:text-3xl font-semibold text-green-600 text-center">Buy Course Confirmation</h1>
+        <p class="mt-4 text-gray-700">Dear <strong>{{ user }}</strong>,</p>
+        <p class="text-gray-700">We are pleased to confirm your course name <strong>{{ course }}</strong></p>
+        <p class="text-gray-700">Total Cost: <strong>${{ course_amount }}</strong></p>
+        <p class="text-gray-700">A confirmation email with details has been sent to <strong>{{ user_email }}</strong>.</p>
+        <!-- Uncomment the next line if you want to enable the PDF download link -->
+        <!-- <p class="text-gray-700">You can download your booking receipt <a href="{{ pdf_link }}" class="text-blue-500 hover:underline">Download Pdf</a>.</p> -->
+        <p class="mt-4 text-gray-700">Thank you for choosing our service.</p>
+        <p>
+            <a id="homeLink" href="https://main--starlit-valkyrie-6a1098.netlify.app/coursepage" class="mt-4 inline-block w-full bg-blue-500 text-white py-2 px-4 rounded text-center hover:bg-blue-600 transition duration-200">Home</a>
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const homeLink = document.getElementById('homeLink');
+            homeLink.addEventListener('click', function (event) {
+                event.preventDefault();
+                window.location.href = 'https://main--starlit-valkyrie-6a1098.netlify.app/coursepage';
+            });
+        });
+    </script>
+</body>
+
+</html>
