@@ -14,7 +14,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 class AdminCheckMixin:
     def check_admin(self, request):
-        user_id = self.kwargs.get('user_id')  # Fetch the user ID from the URL
+        user_id = self.kwargs.get('user_id')
         if not user_id:
             raise PermissionDenied({"error": "User ID is required."})
 
@@ -22,8 +22,6 @@ class AdminCheckMixin:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
             raise PermissionDenied({"error": "User not found."})
-
-        # Check if the user is an admin
         if not user.is_staff:
             raise PermissionDenied({"error": "You do not have permission to perform this action."})
 
@@ -35,7 +33,7 @@ class StudentApiView(AdminCheckMixin, viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
-        self.check_admin(self.request)  # Check admin status here
+        self.check_admin(self.request)
         return super().get_queryset()
 
     def partial_update(self, request, *args, **kwargs):
@@ -47,7 +45,6 @@ class StudentApiView(AdminCheckMixin, viewsets.ModelViewSet):
             self.perform_update(serializer)
             return Response(serializer.data, status=200)
         else:
-            # Return the validation errors in the response for better debugging
             return Response(serializer.errors, status=400)
 
 
@@ -55,10 +52,10 @@ class TeasherApiView(AdminCheckMixin, viewsets.ModelViewSet):
     queryset = TeacherModel.objects.all()
     serializer_class = TeacherSerializer
     authentication_classes = [SessionAuthentication]
-    parser_classes = [MultiPartParser, FormParser]  # Added JSONParser
+    parser_classes = [MultiPartParser, FormParser] 
 
     def get_queryset(self):
-        self.check_admin(self.request)  # Check admin status here
+        self.check_admin(self.request)
         return super().get_queryset()
 
     def partial_update(self, request, *args, **kwargs):
@@ -71,7 +68,6 @@ class TeasherApiView(AdminCheckMixin, viewsets.ModelViewSet):
             
             return Response(serializer.data, status=200)
         else:
-            # Return the validation errors in the response for better debugging
             return Response(serializer.errors, status=400)
 
 
@@ -81,7 +77,7 @@ class CourseApiView(AdminCheckMixin, viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication]
 
     def get_queryset(self):
-        self.check_admin(self.request)  # Check admin status here
+        self.check_admin(self.request)
         return super().get_queryset()
 
     def partial_update(self, request, *args, **kwargs):
@@ -95,7 +91,7 @@ class VideoApiView(AdminCheckMixin, viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication]
 
     def get_queryset(self):
-        self.check_admin(self.request)  # Check admin status here
+        self.check_admin(self.request)
         return super().get_queryset()
 
     def partial_update(self, request, *args, **kwargs):
@@ -109,7 +105,7 @@ class DepartmentApiView(AdminCheckMixin, viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication]
 
     def get_queryset(self):
-        self.check_admin(self.request)  # Check admin status here
+        self.check_admin(self.request)
         return super().get_queryset()
 
     def partial_update(self, request, *args, **kwargs):
@@ -123,7 +119,7 @@ class ContactApiView(AdminCheckMixin, viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication]
 
     def get_queryset(self):
-        self.check_admin(self.request)  # Check admin status here
+        self.check_admin(self.request) 
         return super().get_queryset()
 
     def partial_update(self, request, *args, **kwargs):
@@ -137,14 +133,14 @@ class ReviewApiView(AdminCheckMixin, viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication]
 
     def get_queryset(self):
-        self.check_admin(self.request)  # Check admin status here
+        self.check_admin(self.request)
         return super().get_queryset()
 
     def partial_update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         serializer = self.get_serializer(instance=self.get_object(), data=request.data, partial=True)
         if not serializer.is_valid():
-            print(serializer.errors)  # Log validation errors for debugging
+            print(serializer.errors) 
             return Response(serializer.errors, status=400)
         return super().partial_update(request, *args, **kwargs)
 
@@ -155,7 +151,7 @@ class WeekApiView(AdminCheckMixin, viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication]
 
     def get_queryset(self):
-        self.check_admin(self.request)  # Check admin status here
+        self.check_admin(self.request)
         return super().get_queryset()
 
     def partial_update(self, request, *args, **kwargs):
@@ -169,7 +165,7 @@ class EnrollApiView(AdminCheckMixin, viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication]
 
     def get_queryset(self):
-        self.check_admin(self.request)  # Check admin status here
+        self.check_admin(self.request)
         return super().get_queryset()
 
     def partial_update(self, request, *args, **kwargs):

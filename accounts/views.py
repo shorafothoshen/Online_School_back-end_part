@@ -140,11 +140,8 @@ class LogoutAPIView(APIView):
         else:
             return Response({"error": "User is not authenticated"}, status=status.HTTP_400_BAD_REQUEST)
 
-
-# add success message
 def successful(request):
     return render(request, 'successful.html')
 
-# add unsuccessful message
 def unsuccessful(request):
     return render(request, 'unsuccessful.html')

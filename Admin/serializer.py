@@ -27,10 +27,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "first_name", "last_name", "email", "gender", "birthday", "image", "is_teacher", "is_staff", 'password', 'confirm_password']
 
-    # Ensure passwords match if both are provided
     def validate(self, data):
         request = self.context.get('request')
-        if request.method == "POST":  # For create
+        if request.method == "POST":
             password = data.get('password')
             confirm_password = data.get('confirm_password')
             
@@ -42,10 +41,8 @@ class UserSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        # Remove confirm_password from validated_data
         validated_data.pop('confirm_password', None)
         password = validated_data.pop('password', None)  
-        # Create the user
         account = super().create(validated_data)
         if password:
             account.set_password(password)
@@ -58,7 +55,6 @@ class UserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         request = self.context.get('request')
         
-        # If it's an admin, ignore the password field during updates
         if request.user.is_staff and 'password' in validated_data:
             validated_data.pop('password')
 
@@ -74,30 +70,24 @@ class TeacherSerializer(serializers.ModelSerializer):
         fields = ["id","user", "department","bio", "Country", "City"]
 
     def create(self, validated_data):
-        # Extract user data and remove it from validated_data
         user_data = validated_data.pop('user')
         print(user_data)
-        # Create the user and set `is_teacher=True`
         user_serializer = UserSerializer(data=user_data, context=self.context)
         if user_serializer.is_valid(raise_exception=True):
             
-            user = user_serializer.save(is_teacher=True)  # Automatically sets is_teacher
+            user = user_serializer.save(is_teacher=True)
             print(user)
-        # Create the teacher model with the created user
+
         teacher = TeacherModel.objects.create(user=user, **validated_data)
         print(teacher)
         return teacher
 
     def update(self, instance, validated_data):
-        # Extract user data for update if provided
         user_data = validated_data.pop('user', None)
         if user_data:
-            # Perform partial update on user fields
             user_serializer = UserSerializer(instance=instance.user, data=user_data, partial=True, context=self.context)
             if user_serializer.is_valid(raise_exception=True):
                 user_serializer.save()
-
-        # Update other teacher fields
         return super().update(instance, validated_data)
 
 
